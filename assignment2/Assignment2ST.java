@@ -104,14 +104,14 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
 
     public Iterable<Key> keys(Key low, Key high)
     {
-        Queue<Key> q = new Queue<Key>();
+        Fifo<Key> q = new Fifo<Key>();
 
         for(int i = rank(low); i < rank(high); i++)
         {
-            q.enqueue(keys[i]);
+            q.enQ(keys[i]);
         }
         if(contains(high))
-            q.enqueue(keys[rank(high)]);
+            q.enQ(keys[rank(high)]);
         return q;
     }
 }
