@@ -11,53 +11,32 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
     private Key[] keys;
     private Value[] values;
     private int N;
-
+    //Constructor to created ordered symbol table
     public Assignment2ST(int capacity)
     {
         keys = (Key[]) new Comparable[capacity];
         values = (Value[]) new Object[capacity];
-
-        for(int i = 0; i < N; i++)
-        {
-            keys[i] = this.keys[i];
-            values[i] = this.values[i];
-        }
-        this.keys = keys;
-        this.values = values;
+        N = 0;
     }
-
+    //Returns number of key-value pairs
     public int size()
     {
         return N;
     }
-
+    //Returns true if the table is empty, false if not
     public boolean isEmpty()
     {
         return N == 0;
     }
-
+    //Returns true if there is a value paired with the given key, else false
     public boolean contains(Key key)
     {
         return get(key) != null;
     }
 
-    public Value get(Key key)
-    {
-        if(isEmpty())
-            return null;
-
-        int i = rank(key);
-
-        if(i < N && keys[i].compareTo(key) == 0)
-            return values[i];
-        else
-            return null;
-    }
-
-    /*Computes the number of keys in the table smaller than the input key
+    /*Returns number of keys smaller than key. (To get index of key)
     **
-    **
-    **
+    **Used to determine where a key fits in the order.
     */
     public int rank(Key key)
     {
@@ -78,7 +57,20 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
         }
         return low;
     }
+    //Returns the value paired with the given key, or null if key absent
+    public Value get(Key key)
+    {
+        if(isEmpty())
+            return null;
 
+        int i = rank(key);
+
+        if(i < N && keys[i].compareTo(key) == 0)
+            return values[i];
+        else
+            return null;
+    }
+    //Inserts key-value pair or deletes if value == null
     public void put(Key key, Value value)
     {
         //Variable i is number of keys smaller than key.
@@ -101,17 +93,25 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
         values[i] = value;
         N++;
     }
-
+    //Returns keys in the table from low to high in sorted order
     public Iterable<Key> keys(Key low, Key high)
     {
         Fifo<Key> q = new Fifo<Key>();
 
         for(int i = rank(low); i < rank(high); i++)
-        {
             q.enQ(keys[i]);
-        }
+
         if(contains(high))
             q.enQ(keys[rank(high)]);
+        return q;
+    }
+    //Returns all keys in the table in sorted order
+    public Iterable<Key> keys()
+    {
+        Fifo<Key> q = new Fifo<Key>();
+
+        for(int i = 0; i < N; i++)
+            q.enQ(keys[i]);
         return q;
     }
 }
