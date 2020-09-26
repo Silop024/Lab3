@@ -1,21 +1,20 @@
 /*Author Jack Webb
-**Last updated 2020-09-08
+**Last updated 2020-09-26
 **The code is able to insert/remove (any type of?) elements in a
 **doubly-linked circular FIFO queue.
 **The methods isEmpty, size, Fifo (constructor) and Node are based on lecture notes.
 */
 
-package task3;
 import java.util.*;
 
-interface Iterable<Item>
-{
-   void enQ(Item item);
-   Item deQ();
-   boolean isEmpty();
-   int size();
-   void printQ();
-}
+// interface Iterable<Item>
+// {
+//    void enQ(Item item);
+//    Item deQ();
+//    boolean isEmpty();
+//    int size();
+//    void printQ();
+// }
 /*Generic class Fifo which is my First in First out class queue which implements
 //my interface Iterable.
 */
@@ -105,6 +104,30 @@ public class Fifo<Item> implements Iterable<Item>
    public int size()
    {
       return i;
+   }
+
+   public Iterator<Item> iterator()
+   {
+       return new ListIterator();
+   }
+
+   private class ListIterator implements Iterator<Item>
+   {
+       private Node current = first;
+
+       public boolean hasNext()
+       {
+           return current != null;
+       }
+
+       public void remove() {}
+
+       public Item next()
+       {
+           Item item = (Item) current.item;
+           current = current.next;
+           return item;
+       }
    }
 
    /*A method used to print the contents of the list as a string.

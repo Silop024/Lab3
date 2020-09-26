@@ -46,6 +46,26 @@ public class Assignment2BST<Key extends Comparable<Key>, Value>
             return x.N;
     }
 
+    public int rank(Key key)
+    {
+        return rank(key, root);
+    }
+
+    private int rank(Key key, Node x)
+    {
+        if(x == null)
+            return 0;
+
+        int compare = key.compareTo(x.key);
+
+        if(compare < 0)
+            return rank(key, x.left);
+        else if(compare > 0)
+            return 1 + size(x.left) + rank(key, x.right);
+        else
+            return size(x.left);
+    }
+
     public Value get(Key key)
     {
         return get(root, key);
@@ -100,5 +120,59 @@ public class Assignment2BST<Key extends Comparable<Key>, Value>
 
         //return root
         return x;
+    }
+
+    public Key min()
+    {
+        return min(root).key;
+    }
+    //Since the smaller nodes are found on the left side of the tree, recursivly
+    //go down the left side until hitting null to find the minimum.
+    private Node min(Node x)
+    {
+        if(x.left == null)
+            return x;
+        return min(x.left);
+    }
+
+    public Key max()
+    {
+        return min(root).key;
+    }
+    //Since the larger nodes are found on the right side of the tree, recursivly
+    //go down the right side until hitting null to find the maximum.
+    private Node max(Node x)
+    {
+        if(x.right == null)
+            return x;
+        return min(x.right);
+    }
+
+    public Iterable<Key> keys()
+    {
+        return keys(min(), max());
+    }
+
+    public Iterable<Key> keys(Key low, Key high)
+    {
+        Fifo<Key> q = new Fifo<Key>();
+        keys(root, q, low, high);
+        return q;
+    }
+
+    private void keys(Node x, Fifo<Key> q, Key low, Key high)
+    {
+        if(x == null)
+            return;
+
+        int compareLow  = low.compareTo(x.key);
+        int compareHigh = high.compareTo(x.key);
+
+        if(compareLow < 0)
+            keys(c.left, q, low, high);
+        if(compareLow <= 0 && compareHigh >= 0)
+            q.enQ(x.key);
+        if(compareHigh > 0)
+            keys(x.right, q, low, high);
     }
 }

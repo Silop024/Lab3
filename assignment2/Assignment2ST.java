@@ -60,11 +60,13 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
     //Returns the value paired with the given key, or null if key absent
     public Value get(Key key)
     {
+        //If empty, there is nothing to get
         if(isEmpty())
             return null;
-
+        //Tells us where the key is to be found or if it does not exist
         int i = rank(key);
-
+        //If key is inside table (i < size) & if key in i is equal to given key
+        //return its value. Else return null.
         if(i < N && keys[i].compareTo(key) == 0)
             return values[i];
         else
@@ -73,22 +75,22 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
     //Inserts key-value pair or deletes if value == null
     public void put(Key key, Value value)
     {
-        //Variable i is number of keys smaller than key.
+        //Tells us where to update the value if key exists or where to put new if not
         int i = rank(key);
 
-        //If key already exists, update value
+        //If key already exists in the table, update value and go out of method
         if(i < N && keys[i].compareTo(key) == 0)
         {
             values[i] = value;
             return;
         }
-        //For all keys bigger than i, move one position to the right
+        //Move all larger keys one position to make room for new key-value pair
         for(int j = N; j > i; j--)
         {
             keys[j] = keys[j - 1];
             values[j] = values[j - 1];
         }
-        //Put new key and its value in table and grow it
+        //Insert new key-value pair and increase size
         keys[i] = key;
         values[i] = value;
         N++;
@@ -108,10 +110,6 @@ public class Assignment2ST<Key extends Comparable<Key>, Value>
     //Returns all keys in the table in sorted order
     public Iterable<Key> keys()
     {
-        Fifo<Key> q = new Fifo<Key>();
-
-        for(int i = 0; i < N; i++)
-            q.enQ(keys[i]);
-        return q;
+        return keys(0, N-1);
     }
 }
