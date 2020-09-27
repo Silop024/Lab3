@@ -11,7 +11,7 @@ public class Ass3main
 
         long startT = System.nanoTime();
 
-        Assignment3ST<String, Integer> st = new Assignment3ST<String, Integer>(97);
+        Assignment3ST<String, Integer> st = new Assignment3ST<String, Integer>(997);
 
         for(int i = 0; s.hasNext(); i++)
         {
